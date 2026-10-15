@@ -1,8 +1,8 @@
 # Submission preparation
 
-Work remains on `development`. Automated tests passed: **34 passed, 0 failed, 1 live test skipped**. Live integration is unverified: Ollama is reachable with an empty model list, and Qdrant/Redis refused connections. See [TEST_RESULTS.md](TEST_RESULTS.md) for actual results and exact errors.
+Work remains on `development`. Automated tests passed: **34 passed, 0 failed, 1 live test skipped**. Full live REST integration is unverified: Ollama is reachable with `qwen2.5:1.5b` installed, but `nomic-embed-text` is absent and Qdrant/Redis refused connections. A standalone real Ollama multi-turn booking smoke test passed using fake Redis and temporary SQLite. See [TEST_RESULTS.md](TEST_RESULTS.md) for actual results and exact errors.
 
-The implementation and documentation are prepared for the final local commit on `development`. No push or merge has been performed. Existing Windows `.venv`, Qdrant collections and Redis data were preserved.
+The implementation and documentation were committed locally on `development` as `316dce3`; final verification notes may follow in a documentation commit. No push or merge has been performed. Existing Windows `.venv`, Qdrant collections and Redis data were preserved.
 
 ## Final verification on the Windows machine
 

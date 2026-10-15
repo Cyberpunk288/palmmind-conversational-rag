@@ -2,7 +2,7 @@
 
 ## Automated tests
 
-**34 passed, 0 failed, 1 skipped, 1 warning in 4.69 seconds.**
+**34 passed, 0 failed, 1 skipped, 1 warning in 3.92 seconds.**
 
 ```powershell
 $env:DISABLE_SQLALCHEMY_CEXT_RUNTIME='1'
@@ -21,11 +21,11 @@ Read-only requests ran outside the sandbox. No existing collection or Redis data
 
 | Service | Target | Actual result |
 | --- | --- | --- |
-| Ollama | `http://127.0.0.1:11434/api/tags` | Reachable, returning `{"models":[]}`. Neither required model is available yet. |
+| Ollama | `http://127.0.0.1:11434/api/tags` | Reachable; `qwen2.5:1.5b` is installed. `nomic-embed-text` is not yet listed. |
 | Qdrant | `http://127.0.0.1:6333/healthz` | `URLError: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it>` |
 | Redis | `127.0.0.1:6379` | `ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it` |
 
-Real model embeddings/generation, server-backed Qdrant operations, Redis memory and the full live booking conversation remain blocked. Downloading models do not appear in Ollama's installed-model list until ready. The user reported `qwen2.5:1.5b` downloading and plans to download `nomic-embed-text` next. No repeated connectivity polling was performed after this final check.
+Real embeddings and document-grounded generation, server-backed Qdrant operations, real Redis memory and full live REST integration remain blocked. Real Ollama booking extraction was verified separately below. The final check confirmed the chat model download is complete; the embedding model remains unavailable. No repeated connectivity polling was performed after this final check.
 
 Once both models and all services are available, run the live test on the Windows machine using its existing working environment:
 
@@ -44,4 +44,12 @@ The installed SQLAlchemy 2.0.54 explicitly implements `DISABLE_SQLALCHEMY_CEXT_R
 
 ## Submission state
 
-Implementation, README, tests and submission instructions are prepared on `development` for the final local commit. `git diff --check` passed. Ignore checks confirmed local environments, `.env`, databases, uploads and model paths are excluded; no environment/database files were tracked. No push or merge has been performed. The live integration limitation must remain disclosed in submission.
+Implementation, README, tests and submission instructions were committed locally on `development` as `316dce3`. Final verification notes are recorded in a subsequent documentation commit. `git diff --check` passed. Ignore checks confirmed local environments, `.env`, databases, uploads and model paths are excluded; no environment/database files were tracked. No push or merge has been performed. The live integration limitation must remain disclosed in submission.
+
+## Real Ollama booking smoke test
+
+**Passed** after the final connectivity check showed `qwen2.5:1.5b` installed. This was an actual OpenAI-compatible Ollama model request sequence through `Services.conversation`, with fake Redis and a temporary in-memory SQLite database. It was not a full live REST/Redis integration test.
+
+The test sent booking intent, name, email and an explicit future date/time over four turns. The model supplied the details, the service requested explicit confirmation, and a separate `Yes, confirm.` saved the booking. A repeated `confirm` returned the same booking ID. Assertions verified exactly one persisted record with `riyan@example.com`, date `2099-10-20`, and time `14:00`. All assertions passed. One intermediate model response triggered the service's validation/re-prompt before the explicit appointment details were supplied; it did not save invalid data.
+
+No existing Qdrant or Redis data was touched. Final automated pytest result remains **34 passed, 0 failed, 1 skipped**, plus one non-failing deprecation warning, in **3.92 seconds**. The standalone real-model smoke test is additional to that pytest count.
