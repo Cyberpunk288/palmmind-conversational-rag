@@ -1,0 +1,1 @@
+Palm Mind AI offers an AI/ML internship. Interns may work on retrieval-augmented generation pipelines, embeddings, vector databases, LLM applications and backend APIs. The assigned assessment requires FastAPI document ingestion and conversational RAG with Redis and interview booking.
