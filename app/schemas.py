@@ -1,5 +1,5 @@
 from typing import Literal
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class IngestionResponse(BaseModel):
@@ -10,6 +10,7 @@ class IngestionResponse(BaseModel):
 
 
 class ChatRequest(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
     session_id: str = Field(min_length=1, max_length=100, pattern=r"^[A-Za-z0-9_-]+$")
     message: str = Field(min_length=1, max_length=4000)
 

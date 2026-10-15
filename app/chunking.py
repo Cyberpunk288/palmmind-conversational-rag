@@ -54,7 +54,8 @@ def recursive_chunks(text: str, size: int = 900, overlap: int = 150) -> list[str
     output: list[str] = [pieces[0]]
     for piece in pieces[1:]:
         prefix = output[-1][-overlap:] if overlap else ""
-        output.append((prefix + piece)[-size:])
+        combined = prefix + piece
+        output.extend(fixed_chunks(combined, size, overlap))
     return output
 
 

@@ -8,3 +8,10 @@ __pycache__/
 qdrant_storage/
 .idea/
 .vscode/
+
+*.sqlite
+*.db-*
+uploads/
+.ollama/
+.coverage
+.venv-test/

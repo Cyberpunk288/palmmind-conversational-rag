@@ -20,3 +20,10 @@ def test_empty_chunks():
 def test_invalid_strategy():
     with pytest.raises(ValueError):
         chunk_text("hello", "invalid")  # type: ignore[arg-type]
+
+
+def test_recursive_preserves_long_unbroken_text():
+    text = ''.join(chr(0x1000 + i) for i in range(700))
+    chunks = recursive_chunks(text, size=100, overlap=15)
+    assert all(character in ''.join(chunks) for character in text)
+    assert all(len(chunk) <= 100 for chunk in chunks)
